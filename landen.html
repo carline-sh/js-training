@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+
+        table {
+            text-align: left;
+            border-collapse: collapse;
+            width: 80%;
+            margin: auto;
+        }
+
+        td, th {
+             border: 1px solid lightgrey;
+             padding: 10px;
+        }
+
+        tr:nth-child(even){
+            background-color: antiquewhite;
+        }
+        tr:first-child {
+            background-color: maroon;
+            color: white;
+        }
+
+    
+    </style>
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+    <script>
+        function init() {
+            $.getJSON('https://xanderwemmers.nl/data/countries.json', toonLanden);
+        }
+
+        function toonLanden(data) {
+            document.getElementById('aantal').innerHTML = `Aantal landen: ${data.length}`;
+
+            let tbl = document.createElement('table');
+
+            let header = document.createElement('tr');
+
+            let titels = ['Naam', 'Inwoners', 'Regio', 'Subregio', 'Hoofdstad', 'Vlag', 'Wapenschild'];
+
+            for (let titel of titels) {
+                let th = document.createElement('th');
+                th.innerHTML = titel;
+                header.append(th);
+            }
+            tbl.append(header);
+
+            for (let land of data){
+                let row = document.createElement('tr');
+
+                let td1 = document.createElement('td');
+                td1.innerHTML = land.name.common;
+                row.append(td1);
+                tbl.append(row);
+
+                let td2 = document.createElement('td');
+                td2.innerHTML = land.population;
+                row.append(td2);
+                tbl.append(row);
+                
+                let td3 = document.createElement('td');
+                td3.innerHTML = land.region;
+                row.append(td3);
+                tbl.append(row);
+
+                let td4 = document.createElement('td');
+                td4.innerHTML = land.subregion;
+                row.append(td4);
+                tbl.append(row);
+
+                let td5 = document.createElement('td');
+                td5.innerHTML = land.capital;
+                row.append(td5);
+                tbl.append(row);
+
+                let td6 = document.createElement('td');
+                let plaatje = document.createElement('img');
+                plaatje.src = land.flags.svg;
+                plaatje.width = 100;
+                plaatje.title = land.flags.alt;
+                td6.append(plaatje);
+
+                row.append(td6);
+                tbl.append(row);
+
+                let td7 = document.createElement('td');
+                let wapenschild = document.createElement('img');
+                wapenschild.src = land.coatOfArms.svg;
+                wapenschild.width = 100;
+                wapenschild.title = land.coatOfArms.alt;
+                td7.append(wapenschild);
+
+                row.append(td7);
+
+                tbl.append(row);
+            }
+        
+            document.getElementById('output').append(tbl);
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <h1>Landen van de wereld</h1>
+    <p id="aantal">Aantal landen: 0</p>
+    <h2 id="titels"></h2>
+    <div id="output"></div>
+</body>
+
+</html>

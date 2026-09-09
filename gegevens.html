@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://code.jquery.com/ui/1.14.2/themes/hot-sneaks/jquery-ui.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        label {
+            display: block;
+            margin: 20px 0 5px 0;
+        }
+
+        .light {
+            background-color: lightblue;
+        }
+
+        .dark {
+            background-color: rgb(62, 62, 68);
+            color: white;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.2/jquery-ui.min.js"></script>
+
+    <script>
+        $(function () {
+            $("#geboortedatum").datepicker({
+                maxDate : 0,
+                minDate: '-100y',
+                dateFormat : 'dd-mm-yy',
+                changeYear : true,
+                changeMonth: true,
+                yearRange: '-100:+0'
+            });
+
+            // $("mijnDialog").dialog({autoOpen : false});
+        });
+
+
+
+        function clearData() {
+            $("input,select").val('');
+            $("input").checked('');
+        }
+
+        function saveData() {
+            let persoon = {
+                voornaam: document.getElementById('voornaam').value,
+                achternaam: document.getElementById('achternaam').value,
+                geboortedatum: document.getElementById('geboortedatum').value,
+                kleur: document.getElementById('kleur').value,
+                land: document.getElementById('land').value,
+                thema: document.getElementById('thema').value
+            };
+
+            localStorage.mijnData = JSON.stringify(persoon);
+
+            // $("mijnDialog").dialog('open');
+        }
+
+        function loadData() {
+            let persoon = JSON.parse(localStorage.mijnData);
+            document.getElementById('voornaam').value = persoon.voornaam;
+            document.getElementById('achternaam').value = persoon.achternaam;
+            document.getElementById('geboortedatum').value = persoon.geboortedatum;
+            document.getElementById('kleur').value = persoon.kleur;
+            document.getElementById('land').value = persoon.land;
+            document.getElementById('thema').value = persoon.thema;
+
+            document.body.className = localStorage.userThema;
+            document.getElementById('radio' + localStorage.userThema).checked = true;
+        }
+
+        function setThema(thema) {
+            document.body.className = thema;
+            localStorage.userThema = thema;
+        }
+    </script>
+</head>
+
+<body id="thema">
+    <h1>Mijn gegevens</h1>
+    <label>Voornaam</label>
+    <input id="voornaam" />
+    <label>Achternaam</label>
+    <input id="achternaam" />
+    <label>Geboortedatum</label>
+    <input id="geboortedatum" />
+    <label>Kleur</label>
+    <input id="kleur" type="color" />
+    <label>Land</label>
+    <select id="land">
+        <option>Frankrijk</option>
+        <option>Zwitserland</option>
+        <option>Duitsland</option>
+        <option>Oostenrijk</option>
+        <option>Spanje</option>
+    </select>
+    <label>Thema</label>
+    <input type="radio" name="thema" id="radiolight" onclick="setThema('light')" /> Light
+    <input type="radio" name="thema" id="radiodark" onclick="setThema('dark')"> Dark
+    <br>
+    <br>
+    <button onclick="saveData()">Save data</button>
+    <button onclick="loadData()">Load data</button>
+    <button onclick="clearData()">Clear data</button>
+    <!-- <div id="mijnDialog" title="Gegevens">
+        <p>De data is opgeslagen</p>
+    </div> -->
+</body>
+
+</html>
