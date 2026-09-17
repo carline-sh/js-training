@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title of document</title>
+    <script>
+        let age = 23;
+        let name = 'carline';
+        console.log(age);
+        console.log(`Je leeftijd is ${age}. Je naam is ${name}.`);
+
+        let students = ['Moeder', 'Vader', 'Kind'];
+
+        let amount = 2;
+
+        console.log(students.length);
+
+        console.log(students[1]);
+
+        for (let st of students) {
+            console.log(st);
+        }
+
+        function birthday() {
+            age++;
+            console.log(age);
+            document.getElementById('newAge').innerHTML = `Je leeftijd is ${age}.`;
+        }
+
+        function add() {
+            let name = document.getElementById('invoer').value;
+
+            if (name == '')
+                return;
+
+            if (name.length > 20) {
+                alert('Veel te lange naam jonge!');
+                return;
+            }
+
+            amount++
+            document.getElementById('amount').innerHTML = `Er zijn ${amount} studenten.`;
+
+            let item = document.createElement('li');
+            item.innerHTML = name;
+            document.getElementById('list').append(item);
+            document.getElementById('invoer').value = '';
+            document.getElementById('invoer').focus();
+        }
+
+    </script>
+</head>
+<body>
+    <h1>Javascript Development</h1>
+    <button onclick="birthday()">Jarig</button>
+    <p id="newAge">Je leeftijd is </p>
+
+    <h3 id="amount">Er zijn twee studenten</h3>
+    <input id="invoer" />
+    <button onclick="add()">toevoegen</button>
+    <ul id="list">
+        <li>Moeder</li>
+        <li>Vader</li>
+    </ul>
+</body>
+</html>

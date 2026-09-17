@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        let progressValue = 60;
+
+        function makeProgress() {
+            progressValue += 10;
+            if (progressValue > 300) {
+                progressValue = 300;
+            }
+            document.getElementById('progressbar').setAttribute('width', progressValue);
+        }
+
+        function stopProgress() {
+            clearInterval(interval_id);
+        }
+
+        let interval_id = setInterval(makeProgress, 100);
+        // setInterval(makeProgress, 100);
+
+    </script>
+</head>
+
+<body>
+    <h1>SVG Plaatjes</h1>
+
+    <h4>Nederlandse vlag</h4>
+    <svg>
+        <rect x="0" y="0" width="300" height="50" fill="red"></rect>
+        <rect x="0" y="100" width="300" height="50" fill="blue"></rect>
+        <text x="118" y="80">Nederland</text>
+    </svg>
+
+    <h4>Japanse vlag</h4>
+    <svg>
+        <rect x="0" y="0" width="300" height="150" stroke="black" fill="white"></rect>
+        <circle cx="150" cy="75" r="40" fill="red"></circle>
+    </svg>
+
+    <h4>Verkeerslicht</h4>
+    <img src="verkeerslicht.svg">
+    <img src="verkeerslicht.svg">
+    <img src="verkeerslicht.svg">
+
+    <h4>Progressbar</h4>
+    <svg height="25">
+        <rect x="0" y="0" width="300" height="25" fill="lightgrey" rx="10"></rect>
+        <rect id="progressbar" x="0" y="0" width="60" height="25" fill="green" rx="10"></rect>
+    </svg>
+
+    <br />
+    <br />
+
+    <button onclick="makeProgress()">Maak progressie</button>
+    <button onclick="stopProgress()">Stop progressie</button>
+</body>
+
+</html>

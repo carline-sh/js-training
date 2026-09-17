@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+
+        canvas {
+            background-color: green;
+        }
+    </style>
+    <script>
+        let bal1 = {
+            kleur: 'white',
+            x: 50,
+            y: 50,
+            speedX: 1,
+            speedY: 1
+        };
+
+        let bal2 = {
+            kleur: 'yellow',
+            x: 150,
+            y: 100,
+            speedX: 1,
+            speedY: -0.5
+        };
+
+        let bal3 = {
+            kleur: 'red',
+            x: 250,
+            y: 80,
+            speedX: -1,
+            speedY: -2
+        };
+
+        let lijst = [bal1, bal2, bal3];
+        
+        function drawCanvas() {
+            let canvas = document.getElementById('mijnCanvas');
+            let context = canvas.getContext('2d');
+
+            context.clearRect(0, 0, 300, 150);
+
+            for (let b of lijst) {
+                context.beginPath();
+                context.arc(b.x, b.y, 10, 0, 2 * Math.PI);
+                context.fillStyle = b.kleur;
+                context.fill();
+
+                b.x += b.speedX;
+                b.y += b.speedY;
+
+                if (b.y > 140){
+                    b.speedY *= -1;
+                }
+                if (b.y < 10){
+                    b.speedY *= -1;
+                }
+                if (b.x < 10) {
+                    b.speedX *= -1;
+                }
+                if (b.x > 290) {
+                    b.speedX *= -1;
+                }
+            }
+        }
+    </script>
+</head>
+<body onload="setInterval(drawCanvas, 10)">
+    <h1>Biljarttafel</h1>
+    <canvas id="mijnCanvas"></canvas>
+</body>
+</html>
