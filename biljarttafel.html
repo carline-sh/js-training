@@ -41,39 +41,94 @@
 
         let lijst = [bal1, bal2, bal3];
         
+        const radius = 10;
+        let canvas;
+        
         function drawCanvas() {
-            let canvas = document.getElementById('mijnCanvas');
+            canvas = document.getElementById('mijnCanvas');
             let context = canvas.getContext('2d');
 
-            context.clearRect(0, 0, 300, 150);
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.rect(0,0, canvas.width, canvas.height);
+            context.fillStyle = 'green';
+            context.fill();
 
             for (let b of lijst) {
                 context.beginPath();
-                context.arc(b.x, b.y, 10, 0, 2 * Math.PI);
+                context.arc(b.x, b.y, radius, 0, 2 * Math.PI);
                 context.fillStyle = b.kleur;
                 context.fill();
 
                 b.x += b.speedX;
                 b.y += b.speedY;
 
-                if (b.y > 140){
+                if (b.y > canvas.height - radius || b.y < radius){
                     b.speedY *= -1;
                 }
-                if (b.y < 10){
-                    b.speedY *= -1;
-                }
-                if (b.x < 10) {
-                    b.speedX *= -1;
-                }
-                if (b.x > 290) {
+                if (b.x < radius || b.x > canvas.width - radius){
                     b.speedX *= -1;
                 }
             }
         }
+
+        function verwijderBal() {
+            lijst.pop();
+        }
+
+        function nieuweBal() {
+            let kleur1 = Math.random() * 255;
+            let kleur2 = Math.random() * 255;
+            let kleur3 = Math.random() * 255;
+
+            canvas = document.getElementById('mijnCanvas');
+            let b = {
+                kleur: `rgb(${kleur1}, ${kleur2}, ${kleur3})`,
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                speedX: Math.random() * 4 -2,
+                speedY: Math.random() * 4- 2
+            };
+
+            if (b.x <= radius) {
+                b.x = radius;
+            }
+
+            if (b.x >= canvas.width - radius) {
+                b.x = canvas.width - radius;
+            }
+
+            if (b.y <= radius) {
+                b.y = radius;
+            }
+            
+            if (b.y >= canvas.height - radius) {
+                b.y = canvas.height - radius;
+            }
+ 
+            lijst.push(b);
+            console.log(b);
+        }
+
+        function saveGame() {
+           localStorage.gameData = JSON.stringify(lijst); 
+        }
+        
+        function loadGame() {
+            if (localStorage.gameData){
+                lijst = JSON.parse(localStorage.gameData);
+            }   
+        }
+
     </script>
 </head>
 <body onload="setInterval(drawCanvas, 10)">
     <h1>Biljarttafel</h1>
-    <canvas id="mijnCanvas"></canvas>
+    <canvas width="500" height="300" id="mijnCanvas"></canvas>
+    <br />
+    <br />
+    <button onclick="verwijderBal()">Verwijder</button>
+    <button onclick="nieuweBal()">Nieuwe bal</button>
+    <button onclick="saveGame()">Save game</button>
+    <button onclick="loadGame()">Load game</button>
 </body>
 </html>
