@@ -40,11 +40,16 @@
         };
 
         let lijst = [bal1, bal2, bal3];
+        let gamePaused = false;
         
         const radius = 10;
         let canvas;
         
         function drawCanvas() {
+            if (gamePaused) {
+                return;
+            }
+
             canvas = document.getElementById('mijnCanvas');
             let context = canvas.getContext('2d');
 
@@ -61,6 +66,9 @@
 
                 b.x += b.speedX;
                 b.y += b.speedY;
+
+                b.speedX *= 0.997;
+                b.speedY *= 0.997;
 
                 if (b.y > canvas.height - radius || b.y < radius){
                     b.speedY *= -1;
@@ -119,16 +127,66 @@
             }   
         }
 
+        function nieuweBal2() {
+            if (gamePaused){
+                return;
+            }
+            
+            console.log(event);
+            let kleur1 = Math.random() * 255;
+            let kleur2 = Math.random() * 255;
+            let kleur3 = Math.random() * 255;
+
+            canvas = document.getElementById('mijnCanvas');
+            let b = {
+                kleur: `rgb(${kleur1}, ${kleur2}, ${kleur3})`,
+                x: event.offsetX,
+                y: event.offsetY,
+                speedX: Math.random() * 4 -2,
+                speedY: Math.random() * 4- 2
+            };
+
+            if (b.x <= radius) {
+                b.x = radius;
+            }
+
+            if (b.x >= canvas.width - radius) {
+                b.x = canvas.width - radius;
+            }
+
+            if (b.y <= radius) {
+                b.y = radius;
+            }
+            
+            if (b.y >= canvas.height - radius) {
+                b.y = canvas.height - radius;
+            }
+ 
+            lijst.push(b);
+            console.log(b);
+        }
+
+        function startStop() {
+            gamePaused = !gamePaused;
+            let knoppen = document.getElementsByTagName('button');
+            for(let knop of knoppen) {
+                if(knop.id != 'startstop'){
+                knop.disabled = gamePaused;
+                }
+            }
+        }
+
     </script>
 </head>
 <body onload="setInterval(drawCanvas, 10)">
     <h1>Biljarttafel</h1>
-    <canvas width="500" height="300" id="mijnCanvas"></canvas>
+    <canvas onclick="nieuweBal2()" width="500" height="300" id="mijnCanvas"></canvas>
     <br />
     <br />
     <button onclick="verwijderBal()">Verwijder</button>
     <button onclick="nieuweBal()">Nieuwe bal</button>
     <button onclick="saveGame()">Save game</button>
     <button onclick="loadGame()">Load game</button>
+    <button id="startstop" onclick="startStop()">Start / Stop</button>
 </body>
 </html>
